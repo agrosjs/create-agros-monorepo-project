@@ -1,0 +1,49 @@
+{
+    "name": "create-agros-monorepo-project",
+    "version": "0.1.1",
+    "description": "Create Agros monorepo project",
+    "main": "lib/index.js",
+    "bin": {
+        "create-agros-monorepo-project": "bin/create-agros-monorepo-project.js"
+    },
+    "scripts": {
+        "build": "rimraf ./lib && tsc --build tsconfig.package.json",
+        "test": "exit 0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/agrosjs/create-agros-monorepo-project.git"
+    },
+    "author": "Lenconda <i@lenconda.top>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/agrosjs/create-agros-monorepo-project/issues"
+    },
+    "files": [
+        "bin",
+        "template",
+        "lib",
+        "LICENSE"
+    ],
+    "homepage": "https://github.com/agrosjs/create-agros-monorepo-project#readme",
+    "devDependencies": {
+        "@babel/core": "^7.18.5",
+        "@babel/plugin-proposal-class-properties": "^7.17.12",
+        "@babel/plugin-proposal-decorators": "^7.18.2",
+        "@types/fs-extra": "^9.0.13",
+        "@types/inquirer": "^8.2.1",
+        "@types/lodash": "^4.14.182",
+        "@types/node": "^15.12.2",
+        "@typescript-eslint/eslint-plugin": "^5.28.0",
+        "@typescript-eslint/parser": "^5.28.0",
+        "babel-plugin-transform-typescript-metadata": "^0.3.2",
+        "eslint": "^7.28.0",
+        "eslint-config-alloy": "^4.5.1",
+        "rimraf": "^3.0.2",
+        "typescript": "^4.5.5"
+    },
+    "dependencies": {
+        "fs-extra": "^10.1.0",
+        "inquirer": "^8.2.4"
+    }
+}
