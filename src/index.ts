@@ -16,5 +16,6 @@ inquirer.prompt([
         default: '',
     },
 ]).then((data = {}) => {
-    
+    console.log(process.cwd);
+    console.log(process.argv);
 });
