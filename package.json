@@ -1,6 +1,6 @@
 {
     "name": "create-agros-monorepo-project",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Create Agros monorepo project",
     "main": "lib/index.js",
     "bin": {
@@ -45,6 +45,7 @@
     },
     "dependencies": {
         "fs-extra": "^10.1.0",
-        "inquirer": "^8.2.4"
+        "inquirer": "^8.2.4",
+        "lodash": "^4.17.21"
     }
 }

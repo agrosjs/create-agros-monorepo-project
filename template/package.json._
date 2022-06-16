@@ -1,6 +1,14 @@
 {
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
+    "files": [
+        "lib",
+        "bin",
+        "LICENSE",
+        "README.md",
+        "package.json",
+        "package-lock.json"
+    ],
     "scripts": {
         "lint": "eslint .",
         "build": "rimraf ./lib && tsc --build tsconfig.package.json",
