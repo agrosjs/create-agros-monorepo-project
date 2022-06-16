@@ -1,6 +1,6 @@
 {
     "name": "create-agros-monorepo-project",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Create Agros monorepo project",
     "main": "lib/index.js",
     "bin": {
@@ -8,6 +8,7 @@
     },
     "scripts": {
         "build": "rimraf ./lib && tsc --build tsconfig.package.json",
+        "prepublish": "npm run build",
         "test": "exit 0"
     },
     "repository": {
