@@ -9,6 +9,9 @@
         "package.json",
         "package-lock.json"
     ],
+    "publishConfig": {
+        "access": "public"
+    },
     "scripts": {
         "lint": "eslint .",
         "build": "rimraf ./lib && tsc --build tsconfig.package.json",

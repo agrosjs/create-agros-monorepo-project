@@ -1,6 +1,6 @@
 {
     "name": "create-agros-monorepo-project",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "description": "Create Agros monorepo project",
     "main": "lib/index.js",
     "bin": {
