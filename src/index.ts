@@ -11,7 +11,7 @@ inquirer.prompt([
     {
         name: 'version',
         message: 'Project initial version',
-        default: '0.1.0',
+        default: '0.0.0',
     },
     {
         name: 'description',
