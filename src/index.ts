@@ -24,6 +24,15 @@ inquirer.prompt([
     const TEMPLATE_DIR = path.resolve(__dirname, '../template');
     const TARGET_DIR = path.resolve(PROCESS_CWD, TARGET_FOLDER);
     const packageConfig = {};
+    const logError = (message: string) => {
+        console.log('\x1b[31m' + message + '\x1b[0m');
+    };
+    const logSuccess = (message: string) => {
+        console.log('\x1b[32m' + message + '\x1b[0m');
+    };
+    const logWarning = (message: string) => {
+        console.log('\x1b[33m' + message + '\x1b[0m');
+    };
 
     try {
         _.merge(
@@ -32,12 +41,12 @@ inquirer.prompt([
             data,
         );
     } catch (e) {
-        console.log('Failed to read content of default package.json');
+        logError('Failed to read content of default package.json');
         process.exit(1);
     }
 
     if (fs.existsSync(TARGET_DIR) && !fs.statSync(TARGET_DIR).isDirectory()) {
-        console.log('There is already a file at ' + TARGET_DIR + ', please remove it and retry');
+        logError('There is already a file at ' + TARGET_DIR + ', please remove it and retry');
         process.exit(1);
     }
 
@@ -54,13 +63,12 @@ inquirer.prompt([
             },
         );
     } catch (e) {
-        console.log('Failed to write file package.json');
+        logError('Failed to write file package.json');
         process.exit(1);
     }
 
     [
         'tsconfig.json._',
-        'tsconfig.package.json._',
     ].forEach((fileName) => {
         try {
             fs.writeFileSync(
@@ -71,9 +79,16 @@ inquirer.prompt([
                 },
             );
         } catch (e) {
-            console.log('Failed to write file', fileName);
+            logError('Failed to write file: ' + fileName);
+            process.exit(1);
         }
     });
 
-    console.log('Project initialized at ', TARGET_DIR);
+    try {
+        fs.mkdirpSync(path.resolve(TARGET_DIR, 'src'));
+    } catch (e) {
+        logWarning('Failed to create dir: src');
+    }
+
+    logSuccess('Project initialized at ' + TARGET_DIR);
 });
