@@ -2,6 +2,8 @@ import * as inquirer from 'inquirer';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import _ from 'lodash';
+import { RushProjectConfig } from './types';
+import { addRushProject } from './add-rush-project';
 
 inquirer.prompt([
     {
@@ -18,11 +20,17 @@ inquirer.prompt([
         message: 'Package description',
         default: '',
     },
+    {
+        name: 'shouldPublish',
+        type: 'confirm',
+        message: 'Should this package available to be published',
+        default: true,
+    },
 ]).then((data = {}) => {
     const PROCESS_CWD = process.cwd();
-    const TARGET_FOLDER = process.argv[2] || '';
+    const TARGET_FOLDER = (process.argv[2] || '').replace(/^packages\//gi, '');
     const TEMPLATE_DIR = path.resolve(__dirname, '../template');
-    const TARGET_DIR = path.resolve(PROCESS_CWD, TARGET_FOLDER);
+    const TARGET_DIR = path.resolve(PROCESS_CWD, 'packages', TARGET_FOLDER);
     const packageConfig = {};
     const logError = (message: string) => {
         console.log('\x1b[31m' + message + '\x1b[0m');
@@ -34,11 +42,25 @@ inquirer.prompt([
         console.log('\x1b[33m' + message + '\x1b[0m');
     };
 
+    if (!TARGET_FOLDER) {
+        logError('The target folder name must be specified');
+        process.exit(1);
+    }
+
+    const userPackageConfig = _.get(
+        data,
+        [
+            'name',
+            'version',
+            'description',
+        ],
+    );
+
     try {
         _.merge(
             packageConfig,
+            userPackageConfig,
             fs.readJsonSync(path.resolve(TEMPLATE_DIR, 'package.json._')),
-            data,
         );
     } catch (e) {
         logError('Failed to read content of default package.json');
@@ -57,7 +79,7 @@ inquirer.prompt([
     try {
         fs.writeFileSync(
             path.resolve(TARGET_DIR, 'package.json'),
-            JSON.stringify(packageConfig, null, 4),
+            JSON.stringify(packageConfig, null, 4) + '\n',
             {
                 encoding: 'utf-8',
             },
@@ -88,6 +110,30 @@ inquirer.prompt([
         fs.mkdirpSync(path.resolve(TARGET_DIR, 'src'));
     } catch (e) {
         logWarning('Failed to create dir: src');
+    }
+
+    try {
+        const rushProjectConfig: RushProjectConfig = {
+            packageName: data.name,
+            projectFolder: `packages/${TARGET_FOLDER}`,
+            shouldPublish: data.shouldPublish,
+        };
+        const rushConfigFilePath = path.resolve(PROCESS_CWD, 'rush.json');
+        const rushConfigFileContent = fs.readFileSync(rushConfigFilePath).toString();
+
+        addRushProject(rushConfigFileContent, rushProjectConfig).then((newContent) => {
+            fs.writeFileSync(
+                rushConfigFilePath,
+                newContent,
+                {
+                    encoding: 'utf-8',
+                },
+            );
+        }).catch((e) => {
+            logWarning('Failed to update rush.json');
+        });
+    } catch (e) {
+        logWarning('Failed to update rush.json');
     }
 
     logSuccess('Project initialized at ' + TARGET_DIR);
