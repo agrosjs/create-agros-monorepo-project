@@ -132,14 +132,15 @@ export const runner = async () => {
         logger.warning('Failed to update rush.json');
     }
 
-    const stopLoggingRushUpdate = logger.loadingLog('Running `rush update`');
+    const stopLoggingRushUpdate = logger.loadingLog('Running "rush update"');
 
     try {
-        runCommand('rush', ['update'], {
+        await runCommand('rush', ['update'], {
             stdio: 'ignore',
         });
+        stopLoggingRushUpdate('success');
     } catch (e) {
-        stopLoggingRushUpdate('warning', 'Failed to run `rush update`');
+        stopLoggingRushUpdate('warning', 'Failed to run "rush update"');
     }
 
     logger.info('Project initialized at ' + TARGET_DIR);
