@@ -47,20 +47,23 @@ inquirer.prompt([
         process.exit(1);
     }
 
-    const userPackageConfig = _.get(
-        data,
-        [
-            'name',
-            'version',
-            'description',
-        ],
-    );
+    const {
+        name,
+        version,
+        description,
+    } = data;
+
+    const userPackageConfig = {
+        name,
+        version,
+        description,
+    };
 
     try {
         _.merge(
             packageConfig,
-            userPackageConfig,
             fs.readJsonSync(path.resolve(TEMPLATE_DIR, 'package.json._')),
+            userPackageConfig,
         );
     } catch (e) {
         logError('Failed to read content of default package.json');
