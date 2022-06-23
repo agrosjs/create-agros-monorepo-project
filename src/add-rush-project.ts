@@ -33,8 +33,6 @@ export const addRushProject = async (content: string, config: RushProjectConfig)
         }
     });
 
-    console.log(offset);
-
     const newProjectConfig = JSON.stringify(config, null, 4)
         .split('\n')
         .map((line) => `${new Array(offset + 4).fill(' ').join('')}${line}`)
